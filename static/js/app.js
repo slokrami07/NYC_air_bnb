@@ -73,15 +73,30 @@ const PRESETS = {
   }
 };
 
+// Production Render Deployed Backend URL
+const PRODUCTION_BACKEND_URL = 'https://nyc-air-bnb-eikp.onrender.com';
+
+// Automatically detect local environment vs deployed production backend
+const getBackendBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    // If explicitly served directly by local FastAPI server on port 8000
+    if ((window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') && window.location.port === '8000') {
+      return window.location.origin;
+    }
+  }
+  return PRODUCTION_BACKEND_URL;
+};
+
+const BASE_URL = getBackendBaseUrl();
+
 // App State
 const state = {
   selectedBorough: 'Manhattan',
   map: null,
   marker: null,
   isApiOnline: false,
-  apiEndpoint: window.location.origin.includes('http') 
-    ? (window.location.port === '8000' ? '/predict' : 'http://127.0.0.1:8000/predict')
-    : 'http://127.0.0.1:8000/predict',
+  apiBaseUrl: BASE_URL,
+  apiEndpoint: `${BASE_URL}/predict`,
   lastPrediction: null
 };
 
@@ -555,15 +570,26 @@ async function executePrediction() {
   const payload = getFormPayload();
   setLoadingState(true);
 
+  // Inform user if Render instance is spinning up
+  const warmupNoticeTimer = setTimeout(() => {
+    showToast('Waking up cloud server (Render free tier may take ~20s)...', 'info');
+  }, 2500);
+
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
     const response = await fetch(state.apiEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
+    clearTimeout(timeoutId);
+    clearTimeout(warmupNoticeTimer);
 
     if (!response.ok) {
       throw new Error(`API returned status ${response.status}: ${response.statusText}`);
@@ -574,6 +600,7 @@ async function executePrediction() {
     setApiOnline(true);
     showToast(`Classification complete: ${data.predicted_room_type}`, 'success');
   } catch (error) {
+    clearTimeout(warmupNoticeTimer);
     console.warn('Backend API call failed, falling back to heuristic simulation mode:', error);
     setApiOnline(false);
 
@@ -697,33 +724,58 @@ function generateMarketInsights(features, roomType, probs) {
  * Check Backend API Health
  */
 async function checkApiHealth() {
+  if (elements.apiStatusText) {
+    elements.apiStatusText.textContent = 'Connecting...';
+  }
+
   try {
-    const res = await fetch(state.apiEndpoint.replace('/predict', '/'), { method: 'GET' });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
+    const res = await fetch(state.apiBaseUrl + '/', { 
+      method: 'GET',
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
     if (res.ok) {
       setApiOnline(true);
     } else {
       setApiOnline(false);
     }
   } catch (err) {
-    setApiOnline(false);
+    // If Render instance is cold-starting, retry after short delay
+    if (elements.apiStatusText) {
+      elements.apiStatusText.textContent = 'Waking up Render...';
+    }
+    setTimeout(async () => {
+      try {
+        const resRetry = await fetch(state.apiBaseUrl + '/', { method: 'GET' });
+        if (resRetry.ok) setApiOnline(true);
+        else setApiOnline(false);
+      } catch (e) {
+        setApiOnline(false);
+      }
+    }, 5000);
   }
 }
 
 function setApiOnline(isOnline) {
   state.isApiOnline = isOnline;
-  const dot = elements.apiStatusPill.querySelector('.status-dot');
+  const dot = elements.apiStatusPill ? elements.apiStatusPill.querySelector('.status-dot') : null;
+  if (!elements.apiStatusPill) return;
+
   if (isOnline) {
     elements.apiStatusPill.style.background = 'rgba(16, 185, 129, 0.1)';
     elements.apiStatusPill.style.borderColor = 'rgba(16, 185, 129, 0.25)';
     elements.apiStatusPill.style.color = 'var(--emerald-400)';
-    dot.classList.remove('offline');
-    elements.apiStatusText.textContent = 'FastAPI Model Live';
+    if (dot) dot.classList.remove('offline');
+    elements.apiStatusText.textContent = 'Render API Live';
   } else {
     elements.apiStatusPill.style.background = 'rgba(244, 63, 94, 0.1)';
     elements.apiStatusPill.style.borderColor = 'rgba(244, 63, 94, 0.25)';
     elements.apiStatusPill.style.color = 'var(--rose-500)';
-    dot.classList.add('offline');
-    elements.apiStatusText.textContent = 'FastAPI Offline (Auto-Preview)';
+    if (dot) dot.classList.add('offline');
+    elements.apiStatusText.textContent = 'Render Offline (Auto-Preview)';
   }
 }
 

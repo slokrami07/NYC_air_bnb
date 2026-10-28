@@ -7,6 +7,7 @@
 [![Scikit-Learn](https://img.shields.io/badge/scikit_learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Pydantic](https://img.shields.io/badge/Pydantic_V2-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=Leaflet&logoColor=white)](https://leafletjs.com/)
+[![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://nyc-air-bnb-eikp.onrender.com)
 [![JavaScript](https://img.shields.io/badge/Vanilla_JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
@@ -14,6 +15,11 @@
   <strong>An end-to-end Machine Learning system & luxury analytical web application that predicts New York City short-term rental categories with Scikit-Learn, FastAPI, and an interactive frontend.</strong>
 </p>
 
+<p align="center">
+  🌐 <strong>Live Cloud Backend:</strong> <a href="https://nyc-air-bnb-eikp.onrender.com">nyc-air-bnb-eikp.onrender.com</a> &nbsp;|&nbsp; 📖 <strong>Swagger Docs:</strong> <a href="https://nyc-air-bnb-eikp.onrender.com/docs">Live Swagger UI</a>
+</p>
+
+[Live API](https://nyc-air-bnb-eikp.onrender.com) •
 [Features](#-key-features) •
 [Architecture](#-system-architecture) •
 [ML Pipeline](#-machine-learning-pipeline) •
@@ -282,10 +288,10 @@ Accept: application/json
 ```
 *Note: The probability array corresponds to `['Entire home/apt', 'Private room', 'Shared room']`.*
 
-#### Sample cURL Command
+#### Sample cURL Command (Live Production API)
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/predict' \
+  'https://nyc-air-bnb-eikp.onrender.com/predict' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
