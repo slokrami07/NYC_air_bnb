@@ -7,7 +7,8 @@
 [![Scikit-Learn](https://img.shields.io/badge/scikit_learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Pydantic](https://img.shields.io/badge/Pydantic_V2-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=Leaflet&logoColor=white)](https://leafletjs.com/)
-[![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://nyc-air-bnb-eikp.onrender.com)
+[![Live App](https://img.shields.io/badge/Live_App-Render-FF385C?style=for-the-badge&logo=render&logoColor=white)](https://nyc-air-bnb-1-krwy.onrender.com/)
+[![API Backend](https://img.shields.io/badge/API_Backend-Render-46E3B7?style=for-the-badge&logo=fastapi&logoColor=white)](https://nyc-air-bnb-eikp.onrender.com)
 [![JavaScript](https://img.shields.io/badge/Vanilla_JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
@@ -16,10 +17,13 @@
 </p>
 
 <p align="center">
-  🌐 <strong>Live Cloud Backend:</strong> <a href="https://nyc-air-bnb-eikp.onrender.com">nyc-air-bnb-eikp.onrender.com</a> &nbsp;|&nbsp; 📖 <strong>Swagger Docs:</strong> <a href="https://nyc-air-bnb-eikp.onrender.com/docs">Live Swagger UI</a>
+  🚀 <strong>Live Web App:</strong> <a href="https://nyc-air-bnb-1-krwy.onrender.com/">nyc-air-bnb-1-krwy.onrender.com</a> &nbsp;|&nbsp;
+  🌐 <strong>Cloud API:</strong> <a href="https://nyc-air-bnb-eikp.onrender.com">nyc-air-bnb-eikp.onrender.com</a> &nbsp;|&nbsp;
+  📖 <strong>Swagger Docs:</strong> <a href="https://nyc-air-bnb-eikp.onrender.com/docs">Interactive Swagger UI</a>
 </p>
 
-[Live API](https://nyc-air-bnb-eikp.onrender.com) •
+[🚀 Live App](https://nyc-air-bnb-1-krwy.onrender.com/) •
+[🌐 Cloud API](https://nyc-air-bnb-eikp.onrender.com) •
 [Features](#-key-features) •
 [Architecture](#-system-architecture) •
 [ML Pipeline](#-machine-learning-pipeline) •
@@ -242,9 +246,10 @@ uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
 ### 4. Open in Your Browser
-- **Interactive UI**: [http://127.0.0.1:8000/app](http://127.0.0.1:8000/app) (or [http://127.0.0.1:8000/](http://127.0.0.1:8000/))
-- **Interactive OpenAPI Swagger Docs**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **ReDoc Documentation**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+- **Live Cloud Web App**: [https://nyc-air-bnb-1-krwy.onrender.com/](https://nyc-air-bnb-1-krwy.onrender.com/)
+- **Live Cloud API**: [https://nyc-air-bnb-eikp.onrender.com](https://nyc-air-bnb-eikp.onrender.com)
+- **Live OpenAPI Swagger Docs**: [https://nyc-air-bnb-eikp.onrender.com/docs](https://nyc-air-bnb-eikp.onrender.com/docs)
+- **Local Development UI**: [http://127.0.0.1:8000/app](http://127.0.0.1:8000/app) (or [http://127.0.0.1:8000/](http://127.0.0.1:8000/))
 
 ---
 
